@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Class-Path: ../lib/jdom.jar ../lib/swt_64bits_3.655.jar . ./t2s
+Main-Class: t2s.Main
+
