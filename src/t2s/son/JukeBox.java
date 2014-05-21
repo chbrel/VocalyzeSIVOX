@@ -23,6 +23,8 @@ public class JukeBox {
 	
 	private ReentrantLock	mutex;
 	
+	private String _fileToRead;
+	
 	private class Player extends Thread {
 		
 		public AudioInputStream		in;
@@ -191,7 +193,68 @@ public class JukeBox {
 	public JukeBox() {
 		player = null;
 		mutex = new ReentrantLock(true);
+		this._fileToRead = null;
 	}
+	
+	 /** 
+     * Construit un JuxeBox pour un fichier donne
+     * 
+     * Method re-written for retrocompatibilty.
+     * 
+     * @author Ecole Polytechnique de Sophia Antipolis
+     * @param s le chemin d'acces au fichier
+     * @deprecated
+     */
+    public JukeBox(String s)
+    {
+    	this();
+    	this._fileToRead = s;
+    }
+    
+    /**
+     * Methode pour lire le fichier contenu dans le jukebox
+     * 
+     * Method re-written for retrocompatibilty.
+     * 
+     * @author Ecole Polytechnique de Sophia Antipolis
+     * @deprecated
+     */
+    public void playSound()
+    {
+    	if (this._fileToRead != null)
+    	{
+    		this.playSound(this._fileToRead, false, false);
+    	}
+    }
+    
+    /**
+     * Methode qui lit en boucle
+     * 
+     * Method re-written for retrocompatibilty.
+     * 
+     * @author Ecole Polytechnique de Sophia Antipolis
+     * @deprecated
+     */
+    public void loopSound()
+    {
+    	if (this._fileToRead != null)
+    	{
+    		this.playSound(this._fileToRead, true, false);
+    	}
+    }
+    
+    /**
+     * Methode qui stoppe la lecture
+     * 
+     * Method re-written for retrocompatibilty.
+     * 
+     * @author Ecole Polytechnique de Sophia Antipolis
+     * @deprecated
+     */
+    public void stop()
+    {
+    	this.stop(false);
+    }
 	
 	private SourceDataLine getLine(final AudioFormat audioFormat) throws LineUnavailableException {
 		SourceDataLine res = null;
