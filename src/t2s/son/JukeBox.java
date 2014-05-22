@@ -39,39 +39,42 @@ public class JukeBox {
 		private String		       filename;
 		
 		public Player(String filename, boolean loop, boolean waitUntilAudioEnds) {
-			super(filename.substring(filename.length() - 10 >= 0 ? filename.length() - 10 : 0));
+			super();
 			
-			this.filename = filename;
-			eraseAudioFileAfterPlayback = false;
-			running = false;
-			terminated = false;
-			this.next = null;
-			this.previous = null;
-			this.loop = loop;
-			this.waitUntilAudioEnds = waitUntilAudioEnds;
-			try {
-				in = AudioSystem.getAudioInputStream(new File(filename));
-				stream = new BufferedInputStream(in);
-				in = new AudioInputStream(stream, in.getFormat(), in.getFrameLength());
-				din = null;
+			if(filename != null) {
+				this.setName(filename.substring(filename.length() - 10 >= 0 ? filename.length() - 10 : 0));	
 				
-				if (in != null) {
-					baseFormat = in.getFormat();
+				this.filename = filename;
+				eraseAudioFileAfterPlayback = false;
+				running = false;
+				terminated = false;
+				this.next = null;
+				this.previous = null;
+				this.loop = loop;
+				this.waitUntilAudioEnds = waitUntilAudioEnds;
+				try {
+					in = AudioSystem.getAudioInputStream(new File(filename));
+					stream = new BufferedInputStream(in);
+					in = new AudioInputStream(stream, in.getFormat(), in.getFrameLength());
+					din = null;
 					
-					decodedFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, baseFormat.getSampleRate(), 16, baseFormat.getChannels(), baseFormat.getChannels() * 2,
-					        baseFormat.getSampleRate(), false);
-					
-					din = AudioSystem.getAudioInputStream(decodedFormat, in);
-					line = getLine(decodedFormat);
+					if (in != null) {
+						baseFormat = in.getFormat();
+						
+						decodedFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, baseFormat.getSampleRate(), 16, baseFormat.getChannels(), baseFormat.getChannels() * 2,
+						        baseFormat.getSampleRate(), false);
+						
+						din = AudioSystem.getAudioInputStream(decodedFormat, in);
+						line = getLine(decodedFormat);
+					}
+				} catch (final UnsupportedAudioFileException e) {
+					e.printStackTrace();
+				} catch (final IOException e) {
+					e.printStackTrace();
+				} catch (final LineUnavailableException e) {
+					e.printStackTrace();
 				}
-			} catch (final UnsupportedAudioFileException e) {
-				e.printStackTrace();
-			} catch (final IOException e) {
-				e.printStackTrace();
-			} catch (final LineUnavailableException e) {
-				e.printStackTrace();
 			}
-			
 		}
 		
 		public Player(String filename, boolean loop, boolean waitUntilAudioEnds, boolean eraseAudioFileAfterPlayback) {
